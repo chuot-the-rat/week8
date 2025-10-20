@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 
-function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add New Book", submitText = "Add Book" }) {
+function BookModal({
+    isOpen,
+    onClose,
+    onSubmit,
+    initialData,
+    titleText = "Add New Book",
+    submitText = "Add Book",
+}) {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
@@ -8,6 +15,7 @@ function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add Ne
         publicationYear: "",
         language: "",
         pages: "",
+        image: "",
     });
 
     // when modal opens, prefill for edit or reset for add
@@ -22,6 +30,7 @@ function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add Ne
                       publicationYear: initialData.publicationYear || "",
                       language: initialData.language || "",
                       pages: initialData.pages || "",
+                      image: initialData.image || "",
                   }
                 : {
                       title: "",
@@ -30,6 +39,7 @@ function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add Ne
                       publicationYear: "",
                       language: "",
                       pages: "",
+                      image: "",
                   }
         );
     }, [isOpen, initialData]);
@@ -144,6 +154,17 @@ function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add Ne
                             required
                         />
                     </div>
+                    <div className="form-group">
+                        <label htmlFor="image">Image URL</label>
+                        <input
+                            type="url"
+                            id="image"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleChange}
+                            placeholder="https://example.com/image.jpg"
+                        />
+                    </div>
                     <div className="form-actions">
                         <button
                             type="button"
@@ -152,7 +173,12 @@ function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add Ne
                         >
                             Cancel
                         </button>
-                        <button type="submit" className="btn-submit">{submitText}</button>
+                        <button
+                            type="submit"
+                            className="btn-submit"
+                        >
+                            {submitText}
+                        </button>
                     </div>
                 </form>
             </div>
