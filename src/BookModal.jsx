@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function BookModal({ isOpen, onClose, onSubmit }) {
+function BookModal({ isOpen, onClose, onSubmit, initialData, titleText = "Add New Book", submitText = "Add Book" }) {
     const [formData, setFormData] = useState({
         title: "",
         author: "",
@@ -9,6 +9,30 @@ function BookModal({ isOpen, onClose, onSubmit }) {
         language: "",
         pages: "",
     });
+
+    // when modal opens, prefill for edit or reset for add
+    useEffect(() => {
+        if (!isOpen) return;
+        setFormData(
+            initialData
+                ? {
+                      title: initialData.title || "",
+                      author: initialData.author || "",
+                      publisher: initialData.publisher || "",
+                      publicationYear: initialData.publicationYear || "",
+                      language: initialData.language || "",
+                      pages: initialData.pages || "",
+                  }
+                : {
+                      title: "",
+                      author: "",
+                      publisher: "",
+                      publicationYear: "",
+                      language: "",
+                      pages: "",
+                  }
+        );
+    }, [isOpen, initialData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,14 +46,6 @@ function BookModal({ isOpen, onClose, onSubmit }) {
         e.preventDefault();
         onSubmit(formData);
         onClose();
-        setFormData({
-            title: "",
-            author: "",
-            publisher: "",
-            publicationYear: "",
-            language: "",
-            pages: "",
-        });
     };
 
     const handleBackdropClick = (e) => {
@@ -47,7 +63,7 @@ function BookModal({ isOpen, onClose, onSubmit }) {
         >
             <div className="modal-content">
                 <div className="modal-header">
-                    <h2>Add New Book</h2>
+                    <h2>{titleText}</h2>
                     <button
                         type="button"
                         className="modal-close"
@@ -136,12 +152,7 @@ function BookModal({ isOpen, onClose, onSubmit }) {
                         >
                             Cancel
                         </button>
-                        <button
-                            type="submit"
-                            className="btn-submit"
-                        >
-                            Add Book
-                        </button>
+                        <button type="submit" className="btn-submit">{submitText}</button>
                     </div>
                 </form>
             </div>
